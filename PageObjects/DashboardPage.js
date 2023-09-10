@@ -8,6 +8,7 @@ class DashboardPage {
     this.cardTitles = page.locator("div.card-body>h5");
     this.products = page.locator("div.card-body");
     this.cartIcon = page.locator("button[routerlink*='cart']");
+    this.successMsg = page.locator("div[aria-label*='Added To Cart']");
   }
 
   async addProductTocartByName(productName) {
@@ -18,17 +19,22 @@ class DashboardPage {
 
     for (let i = 0; i < count; ++i) {
       if (
-        (await this.products.nth(i).locator("b").textContent()) === productName ) {
-          await this.products.nth(i).locator("i[class*='cart']").click();
-          break;
+        (await this.products.nth(i).locator("b").textContent()) === productName
+      ) {
+        await this.products.nth(i).locator("i[class*='cart']").click();
+        break;
       }
     }
-   
-    }
-    
-    async navigateToCart() {   
-      await this.cartIcon.click();
-      await this.page.locator("div li").first().waitFor();
-    }
+  }
+
+  async navigateToCart() {
+    await this.cartIcon.click();
+    await this.page.locator("div li").first().waitFor();
+  }
+
+  async getSuccessMsg() {
+    const successMsg = await this.successMsg.textContent();
+    return successMsg;
+  }
 }
 export { DashboardPage };
